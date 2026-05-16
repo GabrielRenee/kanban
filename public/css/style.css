@@ -139,7 +139,7 @@ h1, h2, h3, .ukiyo-title {
 }
 
 /* Auth View */
-#auth-view {
+#auth-view.active {
   display: flex;
   justify-content: center;
   align-items: center;

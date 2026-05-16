@@ -97,8 +97,10 @@ function showKanbanView() {
 // Auth Logic
 async function handleLogin(e) {
     e.preventDefault();
+    console.log("Login attempted");
     const user = document.getElementById('login-username').value;
     const pass = document.getElementById('login-password').value;
+    console.log("Credentials:", { username: user, passwordLength: pass.length });
 
     try {
         const res = await fetch('/api/auth/login', {
@@ -108,6 +110,7 @@ async function handleLogin(e) {
         });
         
         const data = await res.json();
+        console.log("Login response:", res.status, data);
         
         if (res.ok) {
             token = data.token;
@@ -120,14 +123,17 @@ async function handleLogin(e) {
             loginError.textContent = data.message;
         }
     } catch (err) {
+        console.error("Login fetch error:", err);
         loginError.textContent = 'Erro de conexão com o servidor';
     }
 }
 
 async function handleRegister(e) {
     e.preventDefault();
+    console.log("Register attempted");
     const user = document.getElementById('register-username').value;
     const pass = document.getElementById('register-password').value;
+    console.log("Register credentials:", { username: user, passwordLength: pass.length });
 
     try {
         const res = await fetch('/api/auth/register', {
@@ -137,6 +143,7 @@ async function handleRegister(e) {
         });
         
         const data = await res.json();
+        console.log("Register response:", res.status, data);
         
         if (res.ok) {
             registerMessage.textContent = 'Registrado com sucesso. Por favor, faça o login.';
@@ -147,6 +154,7 @@ async function handleRegister(e) {
             registerMessage.style.color = 'var(--hi-iro-vermilion)';
         }
     } catch (err) {
+        console.error("Register fetch error:", err);
         registerMessage.textContent = 'Erro de conexão com o servidor';
         registerMessage.style.color = 'var(--hi-iro-vermilion)';
     }
@@ -397,4 +405,9 @@ function initDragAndDrop() {
 }
 
 // Run
-document.addEventListener('DOMContentLoaded', init);
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+} else {
+    init();
+}
+console.log("App.js loaded");
