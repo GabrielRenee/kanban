@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanban Ukiyo-e</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- SortableJS for drag and drop -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+</head>
+<body>
+    <div id="app-container">
+        
+        <!-- AUTHENTICATION VIEW -->
+        <div id="auth-view" class="view-container active">
+            <div class="auth-box ukiyo-card">
+                <h1 class="ukiyo-title">Kanban <span class="stamp">看板</span></h1>
+                
+                <div class="auth-tabs">
+                    <button class="tab-btn active" onclick="switchAuthTab('login')">Entrar</button>
+                    <button class="tab-btn" onclick="switchAuthTab('register')">Registrar</button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="login-form" class="auth-form active">
+                    <div class="input-group">
+                        <label for="login-username">Usuário</label>
+                        <input type="text" id="login-username" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="login-password">Senha</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" class="btn primary-btn">Entrar</button>
+                    <p id="login-error" class="error-message"></p>
+                </form>
+
+                <!-- Register Form -->
+                <form id="register-form" class="auth-form">
+                    <div class="input-group">
+                        <label for="register-username">Usuário</label>
+                        <input type="text" id="register-username" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="register-password">Senha</label>
+                        <input type="password" id="register-password" required>
+                    </div>
+                    <button type="submit" class="btn primary-btn">Registrar</button>
+                    <p id="register-message" class="message"></p>
+                </form>
+            </div>
+        </div>
+
+        <!-- MAIN KANBAN VIEW -->
+        <div id="kanban-view" class="view-container">
+            <!-- Header -->
+            <header class="app-header">
+                <h1 class="ukiyo-title">Kanban <span class="stamp">看板</span></h1>
+                <div class="user-controls">
+                    <span id="welcome-message">Bem-vindo, Usuário</span>
+                    <button id="logout-btn" class="btn secondary-btn">Sair</button>
+                </div>
+            </header>
+
+            <!-- Dashboard -->
+            <section class="dashboard">
+                <div class="dashboard-card ukiyo-card">
+                    <h3>Total de Tarefas</h3>
+                    <p id="count-total" class="count">0</p>
+                </div>
+                <div class="dashboard-card ukiyo-card">
+                    <h3>Em Andamento</h3>
+                    <p id="count-progress" class="count">0</p>
+                </div>
+                <div class="dashboard-card ukiyo-card">
+                    <h3>Concluídas</h3>
+                    <p id="count-completed" class="count">0</p>
+                </div>
+                <div class="dashboard-card ukiyo-card danger">
+                    <h3>Atrasadas</h3>
+                    <p id="count-overdue" class="count">0</p>
+                </div>
+            </section>
+
+            <!-- Actions -->
+            <section class="actions-bar">
+                <button id="add-task-btn" class="btn primary-btn">+ Nova Tarefa</button>
+            </section>
+
+            <!-- Kanban Board -->
+            <section class="kanban-board">
+                <!-- To Do Column -->
+                <div class="column">
+                    <div class="column-header column-todo">
+                        <h2>A Fazer <span class="jp-text">To Do</span></h2>
+                    </div>
+                    <div class="task-list" id="col-todo" data-status="To Do">
+                        <!-- Tasks will be injected here -->
+                    </div>
+                </div>
+
+                <!-- Doing Column -->
+                <div class="column">
+                    <div class="column-header column-doing">
+                        <h2>Fazendo <span class="jp-text">Doing</span></h2>
+                    </div>
+                    <div class="task-list" id="col-doing" data-status="Doing">
+                        <!-- Tasks will be injected here -->
+                    </div>
+                </div>
+
+                <!-- Done Column -->
+                <div class="column">
+                    <div class="column-header column-done">
+                        <h2>Concluído <span class="jp-text">Done</span></h2>
+                    </div>
+                    <div class="task-list" id="col-done" data-status="Done">
+                        <!-- Tasks will be injected here -->
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Add/Edit Task Modal -->
+        <div id="task-modal" class="modal">
+            <div class="modal-content ukiyo-card">
+                <span class="close-btn" id="close-modal">&times;</span>
+                <h2 id="modal-title" class="ukiyo-title">Nova Tarefa</h2>
+                <form id="task-form">
+                    <input type="hidden" id="task-id">
+                    <div class="input-group">
+                        <label for="task-title">Título</label>
+                        <input type="text" id="task-title" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="task-desc">Descrição</label>
+                        <textarea id="task-desc" rows="3"></textarea>
+                    </div>
+                    <div class="input-group">
+                        <label for="task-date">Data de Vencimento</label>
+                        <input type="date" id="task-date">
+                    </div>
+                    <div class="input-group">
+                        <label for="task-status">Status</label>
+                        <select id="task-status">
+                            <option value="To Do">A Fazer</option>
+                            <option value="Doing">Fazendo</option>
+                            <option value="Done">Concluído</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn primary-btn">Salvar Tarefa</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Template for a task card -->
+    <template id="task-template">
+        <div class="task-card ukiyo-card" data-id="">
+            <div class="task-header">
+                <h4 class="task-title"></h4>
+                <div class="task-actions">
+                    <button class="icon-btn edit-btn" title="Editar">✎</button>
+                    <button class="icon-btn delete-btn" title="Excluir">🗑</button>
+                </div>
+            </div>
+            <p class="task-desc"></p>
+            <div class="task-footer">
+                <span class="task-date"></span>
+                <button class="btn complete-toggle-btn"></button>
+            </div>
+        </div>
+    </template>
+
+    <script src="/js/app.js?v=2"></script>
+</body>
+</html>

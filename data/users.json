@@ -1,0 +1,32 @@
+[
+  {
+    "id": "1778963059295",
+    "username": "gabriel",
+    "password": "$2b$10$ghNICI3GREJhr9gjGPIkj.aHIan.Hlrwb7G6TdKnR8tse1NY02LHG"
+  },
+  {
+    "id": "1778963389575",
+    "username": "gabriel2",
+    "password": "$2b$10$9ImLb.6GGbRC132c0hlSHeWzbYF8HEE4jKx9nrp.Cb794BxYio/zW"
+  },
+  {
+    "id": "1778963463601",
+    "username": "testuser",
+    "password": "$2b$10$FkwwAbRWuHBc.1/1FYUsSupFTOrxrYepvfmbaOxvnUjcuLLniFH9C"
+  },
+  {
+    "id": "1778963511677",
+    "username": "testusertestuser",
+    "password": "$2b$10$L3oA71ujU.BPFSjSCrlznuFZ6ST0eUUv30mY6OWiNBYjRXNtGhj1q"
+  },
+  {
+    "id": "1778963559477",
+    "username": "testusertestuserdebuguser",
+    "password": "$2b$10$s44.MMzFmBYklLy2zeTAH.otiKJpmSB633a/jNY/N0wtwqhtWdhmy"
+  },
+  {
+    "id": "1778963666873",
+    "username": "test1",
+    "password": "$2b$10$o0RKuhaxp73UJqxg2fTSjOPiFJO0DZkTrGgGDUvcW8nMMJ/bZdhwO"
+  }
+]
